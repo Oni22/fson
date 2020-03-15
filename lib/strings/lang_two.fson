@@ -2,7 +2,14 @@ from_second {
     en: "Hallo",
     de: "standart"
     },
-from_second {
+from_sec {
+    en: "Cool",
+    de: ["eins","zwei"]
+    },
+
+
+
+from_second_world {
     en: "Cool",
     de: ["eins","zwei"]
     }
