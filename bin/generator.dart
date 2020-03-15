@@ -10,19 +10,18 @@ main(List<String> args) {
   
   dir.list().forEach((f) async {
     var file = File(f.path);
-    var content = await file.readAsString();
-    var frParser = FRParser.toRStrings(content);
+    if(path.extension(path.basename(file.path)) != ".fson") {
+      var content = await file.readAsString();
+      var frParser = FRParser.toRStrings(content);
 
-    String finalContent = "import 'package:string_res/string_res.dart';\nclass R {\n";
+      String finalContent = "import 'package:string_res/string_res.dart';\nclass R {\n";
 
-    frParser.strings.forEach((r) {
-      finalContent += "\tstatic RString ${r.name} = RString(langs: ${r.langs.toString()} ,name: \"${r.name}\");\n";
-    });
+      frParser.strings.forEach((r) {
+        finalContent += "\tstatic RString ${r.name} = RString(langs: ${r.langs.toString()} ,name: \"${r.name}\");\n";
+      });
 
-    finalContent += "}";
-    File(relativePath + "/${path.basename(file.path)}.dart").writeAsString(finalContent);
+      finalContent += "}";
+      File(relativePath + "/${path.basename(file.path)}.dart").writeAsString(finalContent);
+    }
   });
-
-  
-
 }
