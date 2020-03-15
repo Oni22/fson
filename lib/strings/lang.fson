@@ -1,0 +1,20 @@
+standart {
+    en: "Hallo",
+    de: "Hello"
+    },
+plurals {
+    en: "Cool",
+    de: ["eins","zwei"]
+    },
+placeholder {
+    en: "I'm a %1p placeholder and %2p second",
+    de: "Ich bin %1p platzhalter und %2p zwei"
+    },
+plural_place {
+    en: ["Hi boy %1p","Hi boy %1p %2p cool %3p"],
+    de: ["Hi junge %1p","Hi junge %1p %2p cool %3p"]
+    },
+plural_place_two {
+    en: ["Hi boy %1p","Hi boy %1p %2p cool %3p"],
+    de: ["Hi junge %1p","Hi junge %1p %2p cool %3p"]
+    }

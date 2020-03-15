@@ -1,0 +1,8 @@
+from_sec {
+    en: "Hallo",
+    de: "Hello"
+    },
+from_second {
+    en: "Cool",
+    de: ["eins","zwei"]
+    }
