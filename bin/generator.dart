@@ -7,21 +7,25 @@ main(List<String> args) {
 
   var relativePath = path.relative("lib/strings/");
   var dir = Directory(relativePath);
+  var parseContent = "";
   
-  dir.list().forEach((f) async {
+  var files = dir.list();
+  files.forEach((f) async {
     var file = File(f.path);
     if(path.extension(path.basename(file.path)) == ".fson") {
       var content = await file.readAsString();
-      var frParser = FRParser.toRStrings(content);
-
-      String finalContent = "import 'package:string_res/string_res.dart';\nclass R {\n";
-
-      frParser.strings.forEach((r) {
-        finalContent += "\tstatic RString ${r.name} = RString(langs: ${r.langs.toString()} ,name: \"${r.name}\");\n";
-      });
-
-      finalContent += "}";
-      File(relativePath + "/${path.basename(file.path)}.dart").writeAsString(finalContent);
+      parseContent += content + ",";
     }
   });
+
+  var frParser = FRParser.toRStrings(parseContent);
+    String finalContent = "import 'package:string_res/string_res.dart';\nclass R {\n";
+    
+    frParser.strings.forEach((r) {
+      finalContent += "\tstatic RString ${r.name} = RString(langs: ${r.langs.toString()} ,name: \"${r.name}\");\n";
+    });
+    
+    finalContent += "}";
+    
+    File(relativePath + "/main.fson.dart").writeAsString(finalContent);
 }

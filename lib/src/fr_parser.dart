@@ -13,7 +13,7 @@ class FRParser {
       var name = blockNameLangs[0].trim();
       var langs = blockNameLangs[1];
 
-      var langList = langs.replaceAll("}","").trim().split(RegExp(r"(,)(?![^[]*\])")).map((lang) {
+      var langList = langs.replaceAll("}","").replaceAll("},","").trim().split(RegExp(r"(,)(?![^[]*\])")).map((lang) {
           var langCodeText = lang.split(":");
           var langCode = langCodeText[0].trim();
           var text = langCodeText[1].trim();
