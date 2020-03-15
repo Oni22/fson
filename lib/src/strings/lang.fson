@@ -1,0 +1,2 @@
+test_text {en: "Hallo",de: "Hello"},
+test_text_two {en: "Cool",de: ["eins","zwei"]}
