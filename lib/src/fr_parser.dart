@@ -10,6 +10,8 @@ class FRParser {
   List<RString> toRStrings(String frData) {
 
     List<RString> strings = [];
+    List<String> currentIds =  [];
+
     var idBlocks = frData.split(RegExp(r"\},"));
     idBlocks.removeWhere((s) => s.length == 0);
 
@@ -21,6 +23,12 @@ class FRParser {
       var fsonValidatorId = validateStringId(name);
       if(!fsonValidatorId.isValid) {
         throw FormatException(fsonValidatorId.message + " " + "at id: $name");
+      } else {
+        if(currentIds.contains(name)) {
+          throw FormatException("Id already exists! at id: $name");
+        } else {
+          currentIds.add(name);
+        } 
       }
 
       Map<String,dynamic> langMap = {};
