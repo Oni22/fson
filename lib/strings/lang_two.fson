@@ -1,6 +1,6 @@
 from_sec {
     en: "Hallo",
-    de: "Hello"
+    de: "standart"
     },
 from_second {
     en: "Cool",

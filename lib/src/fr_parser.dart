@@ -20,8 +20,9 @@ class FRParser {
       var name = blockNameLangs[0].trim();
       var langs = blockNameLangs[1];
 
-      if(!validateStringId(name)) {
-        throw FormatException("FSON_ERROR: Id name has unsupported characters. Only underscores are allowed in id names! at id: $name");
+      var fsonValidatorId = validateStringId(name);
+      if(!fsonValidatorId.isValid) {
+        throw FormatException(fsonValidatorId.message + " " + "at id: $name");
       }
 
       Map<String,dynamic> langMap = {};
@@ -34,6 +35,11 @@ class FRParser {
         }
 
         var text = langCodeText[1].trim();
+        var fsonValidatorText = validateText(text);
+        if(!fsonValidatorText.isValid) {
+          throw FormatException(fsonValidatorText.message + " m" + "at id: $name");
+        }
+
         if(text.contains(RegExp(r"\[(.*?)\]"))) {
           var plurals = text.replaceAll("[", "").replaceAll("]", "").trim().split(",");
           langMap["\"$langCode\""] = plurals;
@@ -53,11 +59,35 @@ class FRParser {
     });
   }
 
-  bool validateStringId(String name) {
+  FSONValidatorError validateStringId(String name) {
     if(name.contains(RegExp(r"[^a-z^A-Z^0-9\^_]+"))) 
-      return false;
+      return FSONValidatorError(isValid: false, message: "FSON_ERROR: Id name has unsupported characters. Only underscores are allowed in id names!");
     else 
-      return true;
+      return FSONValidatorError(isValid: true, message: "");
+  }
+
+  FSONValidatorError validateText(String text) {
+    if(text.contains(RegExp(r"\[(.*?)\]"))) {
+      var rawPlurals = text.replaceAll("[", "").replaceFirst("]", "");
+      if(rawPlurals.contains("[") || rawPlurals.contains("]")) {
+        return FSONValidatorError(isValid: false, message: "FSON_ERROR: Plurals inside plurals are not allowed!");
+      }
+      var validatedPlurals = rawPlurals.trim().split(",");
+      //"[^"]*"
+      for(var p in validatedPlurals) {
+        if(!p.startsWith("\"") || !p.endsWith("\"")) {
+          return FSONValidatorError(isValid: false, message: "FSON_ERROR: Text must be a string!");
+        } else {
+          var r = p.replaceAll(RegExp(r"^.|.$"),"");
+          if(r.contains("\"")) { //NOT FINAL
+            return FSONValidatorError(isValid: false,message:"FSON_ERROR: Please escape with \\""\" inside a string");
+          }    
+        }
+      }
+      return FSONValidatorError(isValid: true,message: "");
+    }
+    print(text);
+    return FSONValidatorError(isValid: text.startsWith("\"") && text.endsWith("\"") ? true : false,message: "");
   }
   
   bool validateISO6391(String code) {
@@ -76,4 +106,10 @@ class _Language {
     name = data["name"];
   }
 
+}
+
+class FSONValidatorError {
+  String message;
+  bool isValid;
+  FSONValidatorError({this.isValid,this.message});
 }
