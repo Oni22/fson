@@ -82,7 +82,7 @@ class FRParser {
   }
   
   bool validateISO6391(String code) {
-    var lang = RService.locales.firstWhere((l) => l == code,orElse: () => null);
+    var lang = RService().langCodes.firstWhere((l) => l == code,orElse: () => null);
     return lang != null;
   }
 

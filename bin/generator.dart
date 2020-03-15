@@ -1,7 +1,9 @@
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:string_res/src/fr_parser.dart';
+
 main(List<String> args) async{
 
   var relativePath = path.relative("lib/strings/");
