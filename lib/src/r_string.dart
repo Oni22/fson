@@ -15,7 +15,7 @@ class RString {
   String get _text => langs[RService.languageCode];
 
   String text({List<dynamic> params}) {
-    if((params.length ?? 0) > 0) {
+    if((params?.length ?? 0) > 0) {
       return _setTextParams(_text, params);
     }
     return _text;
@@ -35,7 +35,7 @@ class RString {
 
     if(langs.containsKey(currentLangCode)){
       if(langs[currentLangCode] is List<String>) {
-        if((params.length ?? 0) > 0)  
+        if((params?.length ?? 0) > 0)  
           return _setTextParams(langs[currentLangCode][quantity],params);
         else 
           return langs[currentLangCode][quantity];
