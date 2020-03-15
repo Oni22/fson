@@ -2,7 +2,6 @@
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:string_res/src/fr_parser.dart';
-
 main(List<String> args) async{
 
   var relativePath = path.relative("lib/strings/");
@@ -18,10 +17,8 @@ main(List<String> args) async{
     }
   }
   
-  var parser = FRParser();
-  await parser.buildLangList();
   String finalContent = "import 'package:string_res/string_res.dart';\nclass R {\n";
-  parser.toRStrings(parseContent).forEach((r) {
+  FRParser().toRStrings(parseContent).forEach((r) {
     finalContent += "\tstatic RString ${r.name} = RString(langs: ${r.langs.toString()} ,name: \"${r.name}\");\n";
   });
   finalContent += "}";

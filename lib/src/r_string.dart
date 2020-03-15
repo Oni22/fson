@@ -12,7 +12,7 @@ class RString {
 
   Map<String,dynamic> langs = {};
 
-  String get _text => langs[RService.languageCode];
+  String get _text => langs[RService.currentLanguageCode];
 
   String text({List<dynamic> params}) {
     if((params?.length ?? 0) > 0) {
@@ -31,7 +31,7 @@ class RString {
 
   String plural(int quantity,{List<dynamic> params,String langCode = ""}) {
 
-    var currentLangCode = langCode == "" ? RService.languageCode : langCode;
+    var currentLangCode = langCode == "" ? RService.currentLanguageCode : langCode;
 
     if(langs.containsKey(currentLangCode)){
       if(langs[currentLangCode] is List<String>) {

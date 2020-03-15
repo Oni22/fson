@@ -1,4 +1,5 @@
 
 class RService {
-  static String languageCode;
+  static String currentLanguageCode;
+  static List<String> locales = [];
 }

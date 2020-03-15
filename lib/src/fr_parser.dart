@@ -7,8 +7,6 @@ import 'package:string_res/string_res.dart';
 
 class FRParser {
 
-  List<_Language> langs = [];
-
   List<RString> toRStrings(String frData) {
 
     List<RString> strings = [];
@@ -52,13 +50,6 @@ class FRParser {
     return strings;
   }
 
-  buildLangList() async{
-    var jsonData = json.decode(await File("lib/src/iso6391codes.json").readAsString());
-    jsonData.forEach((d) {
-      langs.add(_Language.parse(d));
-    });
-  }
-
   FSONValidatorError validateStringId(String name) {
     if(name.contains(RegExp(r"[^a-z^A-Z^0-9\^_]+"))) 
       return FSONValidatorError(isValid: false, message: "FSON_ERROR: Id name has unsupported characters. Only underscores are allowed in id names!");
@@ -91,19 +82,8 @@ class FRParser {
   }
   
   bool validateISO6391(String code) {
-    var lang = langs.firstWhere((l) => l.code == code,orElse: () => null);
+    var lang = RService.locales.firstWhere((l) => l == code,orElse: () => null);
     return lang != null;
-  }
-
-}
-
-class _Language {
-  String code;
-  String name;
-
-  _Language.parse(dynamic data) {
-    code = data["code"];
-    name = data["name"];
   }
 
 }
