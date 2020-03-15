@@ -1,22 +1,28 @@
 
-
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:string_res/src/fr_parser.dart';
 
-main(List<String> args) async {
+main(List<String> args) {
 
-  var relativePath = path.relative("lib/src/strings/");
-  var content = await File(relativePath + "/lang.fson").readAsString();
-  var frParser = FRParser.toRStrings(content);
+  var relativePath = path.relative("lib/strings/");
+  var dir = Directory(relativePath);
   
-  String finalContent = "import 'package:string_res/string_res.dart';\nclass R {\n";
+  dir.list().forEach((f) async {
+    var file = File(f.path);
+    var content = await file.readAsString();
+    var frParser = FRParser.toRStrings(content);
 
-  frParser.strings.forEach((r) {
-    finalContent += "\tstatic RString ${r.name} = RString(langs: ${r.langs.toString()} ,name: \"${r.name}\");\n";
+    String finalContent = "import 'package:string_res/string_res.dart';\nclass R {\n";
+
+    frParser.strings.forEach((r) {
+      finalContent += "\tstatic RString ${r.name} = RString(langs: ${r.langs.toString()} ,name: \"${r.name}\");\n";
+    });
+
+    finalContent += "}";
+    File(relativePath + "/${path.basename(file.path)}.dart").writeAsString(finalContent);
   });
+
   
-  finalContent += "}";
-  File(relativePath + "/lang.fson.dart").writeAsString(finalContent);
 
 }
