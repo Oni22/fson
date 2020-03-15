@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:string_res/src/fr_parser.dart';
+import 'package:string_res/string_res.dart';
 
 main(List<String> args) async{
 
+  RService.backUpLanguageCode = "en";
   var relativePath = path.relative("lib/strings/");
   var dir = Directory(relativePath);
   var parseContent = "";

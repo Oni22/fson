@@ -12,7 +12,12 @@ class RString {
 
   Map<String,dynamic> langs = {};
 
-  String get _text => langs[RService.currentLanguageCode];
+  String get _text {
+    if(langs.containsKey(RService.currentLanguageCode)) {
+      return langs[RService.currentLanguageCode];
+    }
+    return langs[RService.backUpLanguageCode];
+  }
 
   String text({List<dynamic> params}) {
     if((params?.length ?? 0) > 0) {

@@ -38,7 +38,7 @@ class FRParser {
         var text = langCodeText[1].trim();
         var fsonValidatorText = validateText(text);
         if(!fsonValidatorText.isValid) {
-          throw FormatException(fsonValidatorText.message + " m" + "at id: $name");
+          throw FormatException(fsonValidatorText.message + " " + "at id: $name");
         }
 
         if(text.contains(RegExp(r"\[(.*?)\]"))) {
@@ -48,6 +48,10 @@ class FRParser {
           langMap["\"$langCode\""] = text;
         }
       });
+
+      if(!langMap.containsKey("\"${RService.backUpLanguageCode}\""))
+        throw FormatException("FSON_ERROR: $name has no back up language. Please add ${RService.backUpLanguageCode}.");
+
       strings.add(RString(langs: langMap,name: name));
     });
     return strings;
