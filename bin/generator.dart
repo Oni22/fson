@@ -15,6 +15,7 @@ main(List<String> args) {
     if(path.extension(path.basename(file.path)) == ".fson") {
       var content = await file.readAsString();
       parseContent += content + ",";
+      print(parseContent);
     }
   });
 
