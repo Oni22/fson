@@ -10,7 +10,7 @@ main(List<String> args) {
   
   dir.list().forEach((f) async {
     var file = File(f.path);
-    if(path.extension(path.basename(file.path)) != ".fson") {
+    if(path.extension(path.basename(file.path)) == ".fson") {
       var content = await file.readAsString();
       var frParser = FRParser.toRStrings(content);
 
