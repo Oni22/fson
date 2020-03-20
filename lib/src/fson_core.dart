@@ -73,7 +73,7 @@ class FSON {
     List<String> currentIds =  [];
 
     for(var fileEntity in files) {
-      if(path.extension(fileEntity.path) == ".fson" && path.basename(fileEntity.path) != "config.fson") {
+      if(path.extension(fileEntity.path) == ".fson") {
         var file = File(fileEntity.path);
         var content = await file.readAsString();
         parseContent += content.replaceAll("\n", "").trim() + ",";

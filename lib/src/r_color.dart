@@ -10,5 +10,13 @@ class RColor extends FSONBase{
 
   String dayColor;
   String nightColor;
-  String get color => RConfig.isDarkMode ? nightColor : dayColor;
+  int get color => RConfig.isDarkMode ? _hexToInt(nightColor) : _hexToInt(dayColor);
+
+  int _hexToInt(String hex) {
+    var hexColor = hex.toUpperCase().replaceAll("#","");
+    if(hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor,radix: 16);
+  }
 }
