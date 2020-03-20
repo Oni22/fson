@@ -1,22 +1,19 @@
  
+import 'package:string_res/src/fson_base.dart';
+import 'package:string_res/src/r_config.dart';
 
-import 'package:string_res/src/r_service.dart';
-
-class RString {
+class RString extends FSONBase{
 
   RString({
-    this.langs,
-    this.name,
-    });
-  String name;
-
-  Map<String,dynamic> langs = {};
+    map,
+    name,
+  }) : super(map: map,name:name);
 
   String get _text {
-    if(langs.containsKey(RService.currentLanguageCode)) {
-      return langs[RService.currentLanguageCode];
+    if(map.containsKey(RConfig.currentLanguageCode)) {
+      return map[RConfig.currentLanguageCode];
     }
-    return langs[RService.backUpLanguageCode];
+    return map[RConfig.backUpLanguageCode];
   }
 
   String text({List<dynamic> params}) {
@@ -36,14 +33,14 @@ class RString {
 
   String plural(int quantity,{List<dynamic> params,String langCode = ""}) {
 
-    var currentLangCode = langCode == "" ? RService.currentLanguageCode : langCode;
+    var currentLangCode = langCode == "" ? RConfig.currentLanguageCode : langCode;
 
-    if(langs.containsKey(currentLangCode)){
-      if(langs[currentLangCode] is List<String>) {
+    if(map.containsKey(currentLangCode)){
+      if(map[currentLangCode] is List<String>) {
         if((params?.length ?? 0) > 0)  
-          return _setTextParams(langs[currentLangCode][quantity],params);
+          return _setTextParams(map[currentLangCode][quantity],params);
         else 
-          return langs[currentLangCode][quantity];
+          return map[currentLangCode][quantity];
       }
       else 
         return "Error lang code hasn't plurals!";

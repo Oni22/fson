@@ -1,5 +1,6 @@
 standart {
     en: "Hallo",
+    tr: "merhaba",
     de: "Hello"
     },
 plurals {
