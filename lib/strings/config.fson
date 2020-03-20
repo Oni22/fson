@@ -1,0 +1,4 @@
+string_config {
+    backUpLanguage: "Hallo",
+    languageCodes: ["en","de"]
+}
