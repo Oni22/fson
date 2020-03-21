@@ -13,8 +13,7 @@ main(List<String> args) async{
     requiredKeys: ["day"],
     keys: ["day","night"]
   ),
-  "lib/colors/",
-  "colors.fson.dart",
+  "colors",
   "C",
   RColor()
   );

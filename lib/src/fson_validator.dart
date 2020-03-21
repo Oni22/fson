@@ -1,4 +1,6 @@
 
+import 'package:string_res/src/fson_models.dart';
+
 class FSONValidatorMessage {
   String message;
   bool isValid;
@@ -13,7 +15,7 @@ class FSONValidator {
     else 
       return FSONValidatorMessage(isValid: true, message: "");
   }
-
+  
   static FSONValidatorMessage validateStringId(String name) {
     if(name.contains(RegExp(r"[^a-z^A-Z^0-9\^_]+"))) 
       return FSONValidatorMessage(isValid: false, message: "FSON_ERROR: Id name has unsupported characters. Only underscores are allowed in id names!");

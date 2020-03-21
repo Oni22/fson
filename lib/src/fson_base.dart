@@ -6,4 +6,6 @@ class FSONBase {
   });
   String name;
   Map<String,dynamic> map = {};
+
+  dynamic getKey(String key) => map[key];
 }

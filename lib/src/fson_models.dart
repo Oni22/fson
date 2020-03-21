@@ -7,7 +7,7 @@ class FSONNode {
   });
 
   String name;
-  List<FSONKeyValueNode> keyValueNodes = [];
+  Set<FSONKeyValueNode> keyValueNodes = Set();
 }
 
 class FSONKeyValueNode {

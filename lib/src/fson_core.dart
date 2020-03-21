@@ -60,13 +60,13 @@ class FSON {
     return fsonModels;
   }
 
-  void buildResource(FSONSchema schema,String readFilesFrom, String saveOutputAs, String parentClassName,FSONBase child) async{
+  void buildResource(FSONSchema schema,String namespace, String parentClassName,FSONBase child) async{
 
     if(child is FSONBase == false) {
       throw Exception("Membertype doens't extend from FSONBase class!");
     }
 
-    var relativePath = path.relative(readFilesFrom);
+    var relativePath = path.relative("lib/$namespace/");
     var parseContent = await combineResources(relativePath);
     List<String> currentIds =  [];
 
@@ -75,7 +75,6 @@ class FSON {
     for(var fson in fsons) {
       
       if(schema.fsonCustomValidate != null) {
-        print(fson.keyValueNodes[0].value);
         schema.fsonCustomValidate(fson);
       }
 
@@ -120,7 +119,7 @@ class FSON {
     }
 
     finalContent += "}";
-    File(relativePath + "/$saveOutputAs").writeAsString(finalContent);
+    File(relativePath + "/$namespace.fson.dart").writeAsString(finalContent);
 
   }
 
