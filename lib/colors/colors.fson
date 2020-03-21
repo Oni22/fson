@@ -1,6 +1,6 @@
-color {
-    day: "#adask"
+final_color {
+    day: "#(colors.finalColor.day)"
 },
 color_two {
-    day: "#(myColor.day)"
+    day: "#(colors.myColor.day)"
 }

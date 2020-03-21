@@ -4,7 +4,7 @@ standart {
     de: "Hello"
     },
 plurals {
-    en: "asdasd",
+    en: "#(colors.myColor.day)",
     de: ["eins","zwei"]
     },
 placeholder {

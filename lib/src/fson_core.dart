@@ -103,47 +103,19 @@ class FSON {
       Map<String,dynamic> map = {};
 
       for(var kv in fson.keyValueNodes) {
-        if(kv?.value?.startsWith("\"#(") == true && kv?.value?.endsWith(")\"") == true) {
-          
-          var splitted = kv.value.replaceAll("\"#(", "").replaceAll(")\"", "").split(".");
-          var namespace = "";
-          var id = "";
-          var key = "";
-          bool isOtherNamepsace = false;
-          
-          if((splitted[0].contains("colors") || splitted[0].contains("styles") || splitted[0].contains("strings")) && splitted.length == 3) {
-            namespace = splitted[0];
-            id = splitted[1];
-            key = splitted[2];
-            isOtherNamepsace = true;
-          } else {
-            id = splitted[0];
-            key = splitted[1];
-          }
-
-          if(isOtherNamepsace) {
-            var keyValue = await loadKeyValueNode(namespace, id, key);
-            map["\"${kv.key}\""] = keyValue.value;
-          } else {
-            var node = fsons.firstWhere((f) => f.name == id);
-            var keyValueNode = node.keyValueNodes.firstWhere((kv) => kv.key == key);
-            map["\"${kv.key}\""] = keyValueNode.value;
-          }
-
+        if(isReference(kv)) {
+          var value = await fetchReference(kv);
+          map["\"${kv.key}\""] = value ?? "";
         } else {
-          
           if(kv.arrayList.length > 0) {
-            map["\"${kv.key}\""] = kv.arrayList;
+          map["\"${kv.key}\""] = kv.arrayList;
           } 
           else {
             map["\"${kv.key}\""] = kv.value;
           }
-                     
-        }
+        }                 
       }
-      print(map.toString());
       finalContent += "\tstatic ${child.runtimeType} ${fson.name} = ${child.runtimeType}(map: ${map.toString()} ,name: \"${fson.name}\");\n";
-
     }
 
     finalContent += "}";
@@ -176,5 +148,45 @@ class FSON {
       }
     }
     return parseContent;
+  }
+
+  bool isReference(FSONKeyValueNode kv) {
+    if(kv?.value?.startsWith("\"#(") == true && kv?.value?.endsWith(")\"") == true) 
+      return true;
+    return false;
+  }
+
+  bool isExternalReference(FSONKeyValueNode kv) {
+    if(isReference(kv)) {
+      var splitted = kv.value.replaceAll("\"#(", "").replaceAll(")\"", "").split(".");
+      if((splitted[0].contains("colors") || splitted[0].contains("styles") || splitted[0].contains("strings")) && splitted.length == 3) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
+
+  Future<String> fetchReference(FSONKeyValueNode kv) async {
+
+    FSONKeyValueNode currentKV = kv;
+
+    if(isReference(kv)) {
+      var splitted = currentKV.value.replaceAll("\"#(", "").replaceAll(")\"", "").split(".");
+      var namespace = "";
+      var id = "";
+      var key = "";
+      
+      if(isExternalReference(kv)) {
+        namespace = splitted[0];
+        id = splitted[1];
+        key = splitted[2];
+        var keyValue = await loadKeyValueNode(namespace, id, key);
+        var fetched = await fetchReference(keyValue);
+        return fetched;
+      } 
+    }
+    return kv.value ?? "";
   }
 }
