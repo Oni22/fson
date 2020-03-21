@@ -184,6 +184,8 @@ class FSON {
         id = splitted[1];
         key = splitted[2];
         var keyValue = await loadKeyValueNode(namespace, id, key);
+        if(keyValue.arrayList.length > 0)
+          throw FormatException("Referencing arrays is not supported! at ${keyValue.arrayList}");
         var fetched = await fetchReference(keyValue);
         return fetched;
       } 
