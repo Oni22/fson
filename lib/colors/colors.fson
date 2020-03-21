@@ -1,3 +1,6 @@
 color {
     day: "#adask"
+},
+color_two {
+    day: "#(myColor.day)"
 }

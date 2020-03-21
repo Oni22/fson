@@ -1,10 +1,10 @@
 standart {
-    en: "Hallo",
+    en: "aaa" ,
     tr: "merhaba",
     de: "Hello"
     },
 plurals {
-    en: "Cool",
+    en: "asdasd",
     de: ["eins","zwei"]
     },
 placeholder {

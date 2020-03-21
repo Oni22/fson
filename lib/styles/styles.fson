@@ -1,0 +1,5 @@
+styles {
+    textSize: "12",
+    textColor: "#(colors.myColor.day)",
+    fontFamily: "SansPro"
+}

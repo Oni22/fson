@@ -27,10 +27,15 @@ class FSON {
         throw FormatException(fsonValidatorId.message + " " + "at id: ${fsonModel.name}");
       }
 
-      langs.replaceAll("}","").replaceAll("},","").trim().split(RegExp(r"(,)(?![^[]*\])")).forEach((lang) {
+      langs.replaceAll("}","").trim().split(RegExp(r"(,)(?![^[]*\])")).forEach((lang) {
         var langCodeText = lang.split(":");
         var langCode = langCodeText[0].trim();
         var text = langCodeText[1].trim();
+
+        var keyValidator = FSONValidator.validateKey(langCode);
+        if(!keyValidator.isValid) {
+          throw FormatException(fsonValidatorId.message + " " + "at id: ${fsonModel.name}");
+        }
 
         var keyValueNode = FSONKeyValueNode(
           key: langCode,
@@ -62,27 +67,12 @@ class FSON {
     }
 
     var relativePath = path.relative(readFilesFrom);
-    var dir = Directory(relativePath);
-
-    if(!dir.existsSync()) { 
-      dir.createSync();
-    }
-
-    var parseContent = "";
-    var files = dir.listSync();
+    var parseContent = await combineResources(relativePath);
     List<String> currentIds =  [];
-
-    for(var fileEntity in files) {
-      if(path.extension(fileEntity.path) == ".fson") {
-        var file = File(fileEntity.path);
-        var content = await file.readAsString();
-        parseContent += content.replaceAll("\n", "").trim() + ",";
-      }
-    }
 
     String finalContent = "import 'package:string_res/string_res.dart';\nclass $parentClassName {\n";
     var fsons = FSON().parse(parseContent);
-    fsons.forEach((fson) {
+    for(var fson in fsons) {
       
       if(currentIds.contains(fson.name)) {
         throw FormatException("Id already exists! at id: ${fson.name}");
@@ -94,7 +84,7 @@ class FSON {
         throw FormatException("Required keys and optional keys shouldn't be null or empty at the same time. Use at least one of these to specify keys for your schema");
       }
 
-      if((fson.keyValueNodes?.length ?? 0) < 1) throw FormatException("Please add Keys to FSONNode! At ${fson.name}"); 
+      if((fson.keyValueNodes?.length ?? 0) < 1) throw FormatException("Please add keys to FSONNode! At ${fson.name}"); 
 
       schema.requiredKeys?.forEach((k) {
           if(fson.keyValueNodes.any((f) => f.key == k) == false)
@@ -112,24 +102,79 @@ class FSON {
 
       Map<String,dynamic> map = {};
 
-      fson.keyValueNodes.forEach((kv) {
+      for(var kv in fson.keyValueNodes) {
+        if(kv?.value?.startsWith("\"#(") == true && kv?.value?.endsWith(")\"") == true) {
+          
+          var splitted = kv.value.replaceAll("\"#(", "").replaceAll(")\"", "").split(".");
+          var namespace = "";
+          var id = "";
+          var key = "";
+          bool isOtherNamepsace = false;
+          
+          if((splitted[0].contains("colors") || splitted[0].contains("styles") || splitted[0].contains("strings")) && splitted.length == 3) {
+            namespace = splitted[0];
+            id = splitted[1];
+            key = splitted[2];
+            isOtherNamepsace = true;
+          } else {
+            id = splitted[0];
+            key = splitted[1];
+          }
 
-        if(kv.arrayList.length > 0) {
-          map["\"${kv.key}\""] = kv.arrayList;
-        } 
-        else {
-          map["\"${kv.key}\""] = kv.value;
+          if(isOtherNamepsace) {
+            var keyValue = await loadKeyValueNode(namespace, id, key);
+            map["\"${kv.key}\""] = keyValue.value;
+          } else {
+            var node = fsons.firstWhere((f) => f.name == id);
+            var keyValueNode = node.keyValueNodes.firstWhere((kv) => kv.key == key);
+            map["\"${kv.key}\""] = keyValueNode.value;
+          }
+
+        } else {
+          
+          if(kv.arrayList.length > 0) {
+            map["\"${kv.key}\""] = kv.arrayList;
+          } 
+          else {
+            map["\"${kv.key}\""] = kv.value;
+          }
+                     
         }
-
-      });
-
+      }
+      print(map.toString());
       finalContent += "\tstatic ${child.runtimeType} ${fson.name} = ${child.runtimeType}(map: ${map.toString()} ,name: \"${fson.name}\");\n";
 
-    });
+    }
 
     finalContent += "}";
     File(relativePath + "/$saveOutputAs").writeAsString(finalContent);
 
   }
 
+  Future<FSONKeyValueNode> loadKeyValueNode(String resourceId, String id, String key) async {
+    var relativePath = path.relative("lib/$resourceId/");
+    var parsedContent = await combineResources(relativePath);
+    var node = parse(parsedContent).firstWhere((f) => f.name == id);
+    return node.keyValueNodes.firstWhere((kv) => kv.key == key);
+  }
+
+  Future<String> combineResources(String directoryPath) async {
+    var dir = Directory(directoryPath);
+
+    if(!dir.existsSync()) { 
+      dir.createSync();
+    }
+
+    var parseContent = "";
+    var files = dir.listSync();
+
+    for(var fileEntity in files) {
+      if(path.extension(fileEntity.path) == ".fson") {
+        var file = File(fileEntity.path);
+        var content = await file.readAsString();
+        parseContent += content.replaceAll("\n", "").trim() + ",";
+      }
+    }
+    return parseContent;
+  }
 }
