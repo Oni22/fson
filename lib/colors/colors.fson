@@ -1,5 +1,5 @@
 final_color {
-    day: "#(colors.finalColor.day)"
+    day: "FUCK YES"
 },
 color_two {
     day: "#(colors.myColor.day)"

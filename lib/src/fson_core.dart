@@ -74,6 +74,11 @@ class FSON {
     var fsons = FSON().parse(parseContent);
     for(var fson in fsons) {
       
+      if(schema.fsonCustomValidate != null) {
+        print(fson.keyValueNodes[0].value);
+        schema.fsonCustomValidate(fson);
+      }
+
       if(currentIds.contains(fson.name)) {
         throw FormatException("Id already exists! at id: ${fson.name}");
       } else {
@@ -95,10 +100,6 @@ class FSON {
           if(schema.keys?.contains(kv.key) == false)
             throw FormatException("Key ${kv.key} not supported! At ${fson.name}!");
       });
-
-      if(schema.fsonCustomValidate != null) {
-        schema.fsonCustomValidate(fson);
-      }
 
       Map<String,dynamic> map = {};
 
