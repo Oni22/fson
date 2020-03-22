@@ -8,7 +8,7 @@ class RColor extends FSONBase{
     name
   }) : super(map: map,name: name);
 
-  int get day => _hexToInt(getKey("night"));
+  int get day => _hexToInt(getKey("day"));
   int get night => _hexToInt(getKey("night"));
   int get color => RConfig.isDarkMode ? night : day;
 
