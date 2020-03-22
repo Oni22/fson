@@ -1,6 +1,6 @@
 
 class RConfig {
-  static String currentLanguageCode = "en";
-  static String backUpLanguageCode = "en";
+  static String currentLanguageCode = "";
+  static String backUpLanguageCode = "";
   static bool isDarkMode = false;
 }

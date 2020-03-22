@@ -15,8 +15,13 @@ class RStyle extends FSONBase {
   String get debugLabel => getKey("debugLabel");
   bool get inherit => getKey("inherit");
   int get color => _hexToInt(getKey("color"));
+  double get letterSpacing => double.parse(getKey("letterSpacing"));
+  double get wordSpacing => double.parse(getKey("wordSpacing"));
+  double get height => double.parse(getKey("height"));
+  double get width => double.parse(getKey("width"));
+
   
-  FontWeight _getFontWeight() {
+  FontWeight getFontWeight() {
     switch(getKey("fontWeight")) {
       case "bold": 
         return FontWeight.bold;
@@ -44,6 +49,28 @@ class RStyle extends FSONBase {
         return FontWeight.normal;
     }
   }
+  
+  FontStyle getFontStyle() {
+    switch(getKey("fontStyle")){
+      case "italic":
+        return FontStyle.italic;
+      case "normal":
+        return FontStyle.normal;
+      default:
+        return FontStyle.normal;
+    }
+  }
+
+  TextBaseline _getTextBaseLine() {
+    switch(getKey("textBaseline")){
+      case "alphabetic":
+        return TextBaseline.alphabetic;
+      case "normal":
+        return TextBaseline.ideographic;
+      default:
+        return TextBaseline.alphabetic;
+    }
+  }
 
   int _hexToInt(String hex) {
     var hexColor = hex.toUpperCase().replaceAll("#","");
@@ -55,4 +82,4 @@ class RStyle extends FSONBase {
 
 }
 
-// TextStyle({bool inherit: true, Color color, Color backgroundColor, double fontSize, FontWeight fontWeight, FontStyle fontStyle, double letterSpacing, double wordSpacing, TextBaseline textBaseline, double height, Locale locale, Paint foreground, Paint background, List<Shadow> shadows, List<FontFeature> fontFeatures, TextDecoration decoration, Color decorationColor, TextDecorationStyle decorationStyle, double decorationThickness, String debugLabel, String fontFamily, List<String> fontFamilyFallback, String package})
+//TextStyle({Paint foreground, Paint background, List<Shadow> shadows, List<FontFeature> fontFeatures, TextDecoration decoration, Color decorationColor, TextDecorationStyle decorationStyle, double decorationThickness, String fontFamily, List<String> fontFamilyFallback, String package})

@@ -27,30 +27,30 @@ class FSON {
         throw FormatException(fsonValidatorId.message + " " + "at id: ${fsonModel.name}");
       }
 
-      langs.replaceAll("}","").trim().split(RegExp(r"(,)(?![^[]*\])")).forEach((lang) {
-        var langCodeText = lang.split(":");
-        var langCode = langCodeText[0].trim();
-        var text = langCodeText[1].trim();
+      langs.replaceAll("}","").trim().split(RegExp(r"(,)(?![^[]*\])")).forEach((keyValueRaw) {
+        var keyValue = keyValueRaw.split(":");
+        var key = keyValue[0].trim();
+        var value = keyValue[1].trim();
 
-        var keyValidator = FSONValidator.validateKey(langCode);
+        var keyValidator = FSONValidator.validateKey(key);
         if(!keyValidator.isValid) {
           throw FormatException(fsonValidatorId.message + " " + "at id: ${fsonModel.name}");
         }
 
         var keyValueNode = FSONKeyValueNode(
-          key: langCode,
+          key: key,
         );
 
-        var fsonValidatorText = FSONValidator.validateText(text);
+        var fsonValidatorText = FSONValidator.validateText(value);
         if(!fsonValidatorText.isValid) {
           throw FormatException(fsonValidatorText.message + " " + "at id: ${fsonModel.name}");
         }
 
-        if(text.contains(RegExp(r"\[(.*?)\]"))) {
-          var plurals = text.replaceAll("[", "").replaceAll("]", "").trim().split(",");
+        if(value.contains(RegExp(r"\[(.*?)\]"))) {
+          var plurals = value.replaceAll("[", "").replaceAll("]", "").trim().split(",");
           keyValueNode.arrayList = plurals;
         } else {
-          keyValueNode.value = text;
+          keyValueNode.value = value;
         }
 
         fsonModel.keyValueNodes.add(keyValueNode);

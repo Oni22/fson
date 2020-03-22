@@ -1,0 +1,3 @@
+myImage {
+    path: "test/image.png"
+}

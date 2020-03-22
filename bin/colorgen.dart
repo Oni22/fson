@@ -14,7 +14,7 @@ main(List<String> args) async{
     keys: ["day","night"]
   ),
   "colors",
-  "C",
+  "RColors",
   RColor()
   );
 }

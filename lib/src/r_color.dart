@@ -8,9 +8,9 @@ class RColor extends FSONBase{
     name
   }) : super(map: map,name: name);
 
-  String dayColor;
-  String nightColor;
-  int get color => RConfig.isDarkMode ? _hexToInt(nightColor) : _hexToInt(dayColor);
+  int get day => _hexToInt(getKey("night"));
+  int get night => _hexToInt(getKey("night"));
+  int get color => RConfig.isDarkMode ? night : day;
 
   int _hexToInt(String hex) {
     var hexColor = hex.toUpperCase().replaceAll("#","");
