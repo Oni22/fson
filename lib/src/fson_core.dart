@@ -17,19 +17,19 @@ class FSON {
     idBlocks.removeWhere((s) => s.length == 0);
 
     idBlocks.forEach((block) {
-      var blockNameLangs = block.split(RegExp(r"\{"));
+      var idAndKeyValuePairs = block.split(RegExp(r"\{"));
       var fsonModel = FSONNode(
-        name: blockNameLangs[0].trim(),
+        name: idAndKeyValuePairs[0].trim(),
       );
 
-      var langs = blockNameLangs[1];
+      var keyValuePair = idAndKeyValuePairs[1];
 
       var fsonValidatorId = FSONValidator.validateStringId(fsonModel.name);
       if(!fsonValidatorId.isValid) {
         throw FormatException(fsonValidatorId.message + " " + "at id: ${fsonModel.name}");
       }
 
-      langs.replaceAll("}","").trim().split(RegExp(r"(,)(?![^[]*\])")).forEach((keyValueRaw) {
+      keyValuePair.replaceAll("}","").trim().split(RegExp(r"(,)(?![^[]*\])")).forEach((keyValueRaw) {
         var keyValue = keyValueRaw.split(":");
         var key = keyValue[0].trim();
         var value = keyValue[1].trim();
