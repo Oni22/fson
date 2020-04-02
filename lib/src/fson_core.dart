@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:path/path.dart' as path;
-import 'package:string_res/src/fson_base.dart';
-import 'package:string_res/src/fson_models.dart';
-import 'package:string_res/src/fson_schema.dart';
-import 'package:string_res/src/fson_validator.dart';
+import 'package:fson/src/fson_base.dart';
+import 'package:fson/src/fson_models.dart';
+import 'package:fson/src/fson_schema.dart';
+import 'package:fson/src/fson_validator.dart';
 
 class FSON {
+
+  static const String _projectNamespace = "fson";
 
   List<FSONNode> parse(String frData) {
 
@@ -70,7 +72,7 @@ class FSON {
     var parseContent = await combineResources(relativePath);
     List<String> currentIds =  [];
 
-    String finalContent = "import 'package:string_res/string_res.dart';\nclass $parentClassName {\n";
+    String finalContent = "import 'package:$_projectNamespace/$_projectNamespace.dart';\nclass $parentClassName {\n";
     var fsons = FSON().parse(parseContent);
     for(var fson in fsons) {
       

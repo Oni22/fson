@@ -1,7 +1,7 @@
 
-import 'package:string_res/src/fson_core.dart';
-import 'package:string_res/src/fson_schema.dart';
-import 'package:string_res/string_res.dart';
+import 'package:fson/src/fson_core.dart';
+import 'package:fson/src/fson_schema.dart';
+import 'package:fson/fson.dart';
 
 main(List<String> args) async{
   FSON().buildResource(FSONSchema(

@@ -1,6 +1,6 @@
  
-import 'package:string_res/src/fson_base.dart';
-import 'package:string_res/src/r_config.dart';
+import 'package:fson/src/fson_base.dart';
+import 'package:fson/src/r_config.dart';
 
 class RString extends FSONBase{
 

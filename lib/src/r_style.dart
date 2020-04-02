@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:string_res/src/fson_base.dart';
+import 'package:fson/src/fson_base.dart';
 
 class RStyle extends FSONBase {
 

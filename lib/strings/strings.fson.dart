@@ -1,5 +1,4 @@
-import 'package:string_res/string_res.dart';
-
+import 'package:fson/fson.dart';
 class RStrings {
 	static RString standart = RString(map: {"en": "aaa", "tr": "merhaba", "de": "Hello"} ,name: "standart");
 	static RString plurals = RString(map: {"en": "This is so cool", "de": ["eins", "zwei"]} ,name: "plurals");
