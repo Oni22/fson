@@ -1,3 +1,0 @@
-finalColor {
-    day: "#(colors.myColor.day)"
-}
