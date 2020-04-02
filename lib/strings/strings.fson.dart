@@ -1,5 +1,6 @@
 import 'package:string_res/string_res.dart';
-class S {
+
+class RStrings {
 	static RString standart = RString(map: {"en": "aaa", "tr": "merhaba", "de": "Hello"} ,name: "standart");
 	static RString plurals = RString(map: {"en": "This is so cool", "de": ["eins", "zwei"]} ,name: "plurals");
 	static RString placeholder = RString(map: {"en": "I'm a %1p placeholder and %2p second", "de": "Ich bin %1p platzhalter und %2p zwei"} ,name: "placeholder");

@@ -1,5 +1,6 @@
 final_color {
-    day: "FUCK YES"
+    day: "FUCK YES",
+    night: "#a"
 },
 color_two {
     day: "#(colors.myColor.day)"

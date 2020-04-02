@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:string_res/colors/colors.fson.dart';
 
 import 'package:string_res/string_res.dart';
+import 'package:string_res/strings/strings.fson.dart';
 
 void main() {
   //test('adds one to input values', () {
@@ -10,4 +12,5 @@ void main() {
   //  expect(calculator.addOne(0), 1);
   //  expect(() => calculator.addOne(null), throwsNoSuchMethodError);
   //});
+
 }
