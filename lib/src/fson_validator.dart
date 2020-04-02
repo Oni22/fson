@@ -1,5 +1,5 @@
 
-import 'package:string_res/src/fson_models.dart';
+import 'package:fson/src/fson_models.dart';
 
 class FSONValidatorMessage {
   String message;
