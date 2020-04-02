@@ -182,10 +182,12 @@ class  MyApp  extends  StatelessWidget {
 	}
 }
 ```
-With the RConfig class you can configurate your resources. Be always sure that you have a back up language. The standard back up language is english.
+With the **RConfig** class you can configurate your resources. Be always sure that you have a **back up language**. **The standard back up language is english**.
   
 
 ### 2. Color resources
+
+#### Schema
 
 Go to your colors folder under lib/ which you created before in step 1.
 Here you create your first file e.g myColors.fson. Then create your first fson node like:
@@ -196,7 +198,6 @@ myColor {
 ```
 The **day** key is a **required** key and it's have to be in **hex format**.
 
-  
 ```
 myColor {
 	day: "#FFFFFF",
