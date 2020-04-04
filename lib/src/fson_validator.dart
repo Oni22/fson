@@ -1,6 +1,4 @@
 
-import 'package:fson/src/fson_models.dart';
-
 class FSONValidatorMessage {
   String message;
   bool isValid;
@@ -24,8 +22,10 @@ class FSONValidator {
   }
 
   static FSONValidatorMessage validateText(String text) {
-    if(text.contains(RegExp(r"\[(.*?)\]"))) {
-      var rawPlurals = text.replaceFirst("[", "").replaceFirst("]", "");
+    // \[((.|\n)*?)\] multiline
+    // \[(.*?)\] singleline
+    if(text.replaceAll("\n","").contains(RegExp(r"\[(.*?)\]"))) {
+      var rawPlurals = text.replaceFirst("[", "").replaceFirst("]", "").replaceAll("\n","");
       if(rawPlurals.contains("[") || rawPlurals.contains("]")) {
         return FSONValidatorMessage(isValid: false, message: "FSON_ERROR: Plurals inside plurals are not allowed!");
       }

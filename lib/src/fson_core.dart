@@ -12,11 +12,11 @@ class FSON {
   List<FSONNode> parse(String frData) {
 
     List<FSONNode> fsonModels = [];
-
     var idBlocks = frData.split(RegExp(r"\},"));
     idBlocks.removeWhere((s) => s.length == 0);
 
     idBlocks.forEach((block) {
+      
       var idAndKeyValuePairs = block.split(RegExp(r"\{"));
       var fsonModel = FSONNode(
         name: idAndKeyValuePairs[0].trim(),
@@ -26,16 +26,20 @@ class FSON {
 
       var fsonValidatorId = FSONValidator.validateStringId(fsonModel.name);
       if(!fsonValidatorId.isValid) {
+         print("ID");
         throw FormatException(fsonValidatorId.message + " " + "at id: ${fsonModel.name}");
       }
 
+      //REGEX: Match only commas outside of array
       keyValuePair.replaceAll("}","").trim().split(RegExp(r"(,)(?![^[]*\])")).forEach((keyValueRaw) {
+
         var keyValue = keyValueRaw.split(":");
         var key = keyValue[0].trim();
         var value = keyValue[1].trim();
 
         var keyValidator = FSONValidator.validateKey(key);
         if(!keyValidator.isValid) {
+          print("KEY");
           throw FormatException(fsonValidatorId.message + " " + "at id: ${fsonModel.name}");
         }
 
@@ -45,11 +49,17 @@ class FSON {
 
         var fsonValidatorText = FSONValidator.validateText(value);
         if(!fsonValidatorText.isValid) {
+          print("TEXT");
           throw FormatException(fsonValidatorText.message + " " + "at id: ${fsonModel.name}");
         }
 
-        if(value.contains(RegExp(r"\[(.*?)\]"))) {
-          var plurals = value.replaceAll("[", "").replaceAll("]", "").trim().split(",");
+        //Is array?
+        //ERROR Multiline Array doenst work why?
+        var testForArray = value.replaceAll("\n", "").trim();
+        print(testForArray.replaceAll("[","").replaceAll("]", "").split(",").toString());
+        if(testForArray.contains(RegExp(r"\[(.*?)\]"))) {
+          print("IS ARRAY");
+          var plurals = value.replaceAll("[", "").replaceAll("]", "").replaceAll("\n","").trim().split(",");
           keyValueNode.arrayList = plurals;
         } else {
           keyValueNode.value = value;
@@ -80,11 +90,7 @@ class FSON {
         schema.fsonCustomValidate(fson);
       }
 
-      if(currentIds.contains(fson.name)) {
-        throw FormatException("Id already exists! at id: ${fson.name}");
-      } else {
-        currentIds.add(fson.name);
-      }
+      tryAddIdToList(currentIds, fson);
 
       if((schema?.requiredKeys?.length ?? 0) < 1 && (schema?.keys?.length ?? 0) < 1) {
         throw FormatException("Required keys and optional keys shouldn't be null or empty at the same time. Use at least one of these to specify keys for your schema");
@@ -125,6 +131,36 @@ class FSON {
 
   }
 
+  void buildConfig() async{
+
+    var relativePath = path.relative("lib/config/");
+    var parseContent = await combineResources(relativePath);
+    List<String> currentIds =  [];
+    final String dimensionsId = "dimensions";
+
+    String finalContent = "import 'package:$_projectNamespace/$_projectNamespace.dart';\nclass RBuildConfig {\n";
+    var fsons = FSON().parse(parseContent);
+    
+    for(var fson in fsons) {
+    
+      tryAddIdToList(currentIds, fson);
+      if(fson.name == dimensionsId && fson.keyValueNodes.length > 0){
+        for(var kv in fson.keyValueNodes) {
+          if(kv.key == "dimensions") {
+              for(var dimen in kv.arrayList)
+                finalContent += "\tbool is${dimen[0].toUpperCase() + dimen.substring(1)} => \"test\"";
+          }
+        }
+      }
+
+    }
+
+    finalContent += "}";
+    File(relativePath + "/flavor.fson.dart").writeAsString(finalContent);
+
+
+  }
+
   Future<FSONKeyValueNode> loadKeyValueNode(String resourceId, String id, String key) async {
     var relativePath = path.relative("lib/$resourceId/");
     var parsedContent = await combineResources(relativePath);
@@ -141,13 +177,19 @@ class FSON {
 
     var parseContent = "";
     var files = dir.listSync();
-
-    for(var fileEntity in files) {
-      if(path.extension(fileEntity.path) == ".fson") {
-        var file = File(fileEntity.path);
-        var content = await file.readAsString();
-        parseContent += content.replaceAll("\n", "").trim() + ",";
+    files.removeWhere((f) => path.extension(f.path) != ".fson");
+    print(files.length);
+    if(files.length > 1) {
+      for(var fileEntity in files) {
+        print(fileEntity.path);
+        if(path.extension(fileEntity.path) == ".fson") {
+          var file = File(fileEntity.path);
+          var content = await file.readAsString();
+          parseContent += content.replaceAll("\n", "").trim() + ",";
+        }
       }
+    } else if(files.length == 1) {
+      parseContent = await File(files[0].path).readAsString();
     }
     return parseContent;
   }
@@ -192,5 +234,13 @@ class FSON {
       } 
     }
     return kv.value ?? "";
+  }
+
+  tryAddIdToList(List<String> ids,FSONNode node) {
+    if(ids.contains(node.name)) {
+        throw FormatException("Id already exists! at id: ${node.name}");
+      } else {
+        ids.add(node.name);
+    }
   }
 }
