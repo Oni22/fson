@@ -54,13 +54,11 @@ class FSON {
         }
 
         //Is array?
-        //ERROR Multiline Array doenst work why?
-        var testForArray = value.replaceAll("\n", "").trim();
-        print(testForArray.replaceAll("[","").replaceAll("]", "").split(",").toString());
-        if(testForArray.contains(RegExp(r"\[(.*?)\]"))) {
-          print("IS ARRAY");
-          var plurals = value.replaceAll("[", "").replaceAll("]", "").replaceAll("\n","").trim().split(",");
-          keyValueNode.arrayList = plurals;
+        //RegExp(r"\[(.*?)\]")
+        if(value.startsWith("[") && value.endsWith("]")) {
+          var arrayValues = value.replaceAll("[", "").replaceAll("]", "").replaceAll("\n","").trim().split(",");
+          print(arrayValues.toString());
+          keyValueNode.arrayList = arrayValues.map((f) => f.trim()).toList();
         } else {
           keyValueNode.value = value;
         }
@@ -178,10 +176,8 @@ class FSON {
     var parseContent = "";
     var files = dir.listSync();
     files.removeWhere((f) => path.extension(f.path) != ".fson");
-    print(files.length);
     if(files.length > 1) {
       for(var fileEntity in files) {
-        print(fileEntity.path);
         if(path.extension(fileEntity.path) == ".fson") {
           var file = File(fileEntity.path);
           var content = await file.readAsString();

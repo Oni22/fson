@@ -13,11 +13,18 @@ placeholder {
     de: "Ich bin %1p platzhalter und %2p zwei"
     },
 plural_place {
-    en: ["Hi boy %1p","Hi boy %1p %2p cool %3p"],
-    de: ["Hi junge %1p","Hi junge %1p %2p cool %3p"]
+    en: [
+        "Hi boy %1p",
+        "Hi boy %1p %2p cool %3p"
+    ],
+    de: ["Hi junge %1p","Hi junge %1p %2p cool %3p"
+    ]
     },
 plural_place_two {
-    en: ["Hi boy %1p","Hi boy %1p %2p cool %3p"],
+    en: [
+        "Hi boy %1p",
+        "Hi boy %1p %2p cool %3p"
+    ],
     de: ["Hi junge %1p","Hi junge %1p %2p cool %3p"]
     },
 test {
