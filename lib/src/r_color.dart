@@ -1,4 +1,4 @@
-import 'package:fson/src/fson_base.dart';
+import 'package:fson_parser/fson_parser.dart';
 import 'package:fson/fson.dart';
 
 class RColor extends FSONBase{

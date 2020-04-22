@@ -10,6 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  fson_parser:
+    git: 
+      url: git://github.com/oni22/fson_parser.git
+      ref: master
 
 dev_dependencies:
   flutter_test:

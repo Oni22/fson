@@ -1,5 +1,4 @@
-import 'package:fson/src/fson_core.dart';
-import 'package:fson/src/fson_schema.dart';
+import 'package:fson_parser/fson_parser.dart';
 import 'package:fson/src/r_color.dart';
 
 

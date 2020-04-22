@@ -1,5 +1,5 @@
 
-import 'package:fson/src/fson_base.dart';
+import 'package:fson_parser/fson_parser.dart';
 
 class RAsset extends FSONBase {
   RAsset({map,name}) : super(map: map, name: name);
