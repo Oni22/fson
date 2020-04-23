@@ -3,6 +3,10 @@ import 'package:fson/src/r_color.dart';
 
 
 main(List<String> args) async{
+  build();
+}
+
+void build() {
   FSON().buildResource(FSONSchema(
     fsonCustomValidate: (fson) {
       if(fson.keyValueNodes.any((kv) => (kv?.arrayList?.length ?? 0) > 0) == true) {
