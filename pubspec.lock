@@ -70,12 +70,10 @@ packages:
   fson_parser:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "6d7ec68f2aa3b3efc09b1ecb65b3cef1ec86ed10"
-      url: "git://github.com/oni22/fson_parser.git"
-    source: git
-    version: "0.0.1"
+      name: fson_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.8.1"
   image:
     dependency: transitive
     description:
