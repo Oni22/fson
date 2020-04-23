@@ -1,0 +1,16 @@
+one {
+    de: [
+        "hi",
+        "zwei",
+        "drei"
+    ],
+    en: "LOL"
+},
+oneone {
+    de: [
+        "hi",
+        "zwei",
+        "drei"
+    ],
+    en: "LOL2"
+}
