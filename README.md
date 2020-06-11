@@ -3,7 +3,7 @@
 Fson is a new notation developed for the Flutter Framework which helps you to create resources easily seperated from your code as known from iOS and Android. 
 
 **Before you start:**
-Check out the fson syntax highlighting plugin for VS Code. **For parsing fson this plugin is required.**
+Check out the fson syntax highlighting plugin for VS Code.
   
 ### 1. How to fson 
 
@@ -86,7 +86,7 @@ Go to your **strings** namespace (folder) under **lib/** which you created befor
 Here you create your first file e.g myStrings.fson. Then create your first fson node like:
 ```
 myString {
-	en: "Hi my name ist fson"
+	en: "Hi my name is fson",
 	de: "Hallo ich bin fson"
 }
 
