@@ -1,9 +1,7 @@
 one {
-    de: [
-        "hi",
+    de: ["hi", 
         "zwei",
-        "drei"
-    ],
+        "drei"],
     en: "LOL"
 },
 oneone {
@@ -11,6 +9,5 @@ oneone {
         "hi",
         "zwei",
         "drei"
-    ],
-    en: "LOL2"
-}
+    ]
+},
