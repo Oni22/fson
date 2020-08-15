@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:fson_parser/fson_parser.dart';
 import 'package:fson/src/r_config.dart';
 
@@ -7,7 +8,7 @@ class RString extends FSONBase {
     name,
   }) : super(map: map, name: name);
 
-  String get _text {
+  String _getTextFromKey() {
     if (map.containsKey(RConfig.currentLanguageCode)) {
       return map[RConfig.currentLanguageCode];
     }
@@ -15,10 +16,12 @@ class RString extends FSONBase {
   }
 
   String text({List<dynamic> params}) {
+    
     if ((params?.length ?? 0) > 0) {
-      return _setTextParams(_text, params);
+      return _setTextParams(_getTextFromKey(), params);
     }
-    return _text;
+
+    return _getTextFromKey();
   }
 
   String _setTextParams(String text, List<dynamic> params) {
