@@ -198,7 +198,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "8d29268e5bd7b36f92dc662386266029feff1563"
+      resolved-ref: "952b7e72316a1ac5cbfcb68c4622fbc96c99ea9c"
       url: "https://github.com/Oni22/fson_parser.git"
     source: git
     version: "0.8.4"
