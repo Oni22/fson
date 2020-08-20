@@ -5,15 +5,21 @@ author:
 homepage:
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  fson_parser: ^0.8.4
-  provider: ^4.3.2
+  #fson_parser: ^0.8.4
+  fson_parser:
+    git:
+      url: https://github.com/Oni22/fson_parser.git
+      ref: master
+  build: ^1.3.0
 
 dev_dependencies:
+  build_config: ^0.4.2
+  build_runner: ^1.10.1
   flutter_test:
     sdk: flutter
 

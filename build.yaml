@@ -1,0 +1,10 @@
+
+builders:
+  fsonBuilder:
+    import: 'package:fson/src/fson_generators.dart'
+    builder_factories: ['fsonBuilder']
+    build_extensions: 
+      .fson:
+        - .fson.dart
+    build_to: source
+    auto_apply: root_package
